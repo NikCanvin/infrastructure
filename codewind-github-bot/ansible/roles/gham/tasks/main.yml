@@ -1,0 +1,47 @@
+
+- import_tasks: ../../shared/tasks/docker.yml
+
+- import_tasks: ../../shared/tasks/shared-setup.yml
+
+# ----------------------------
+
+- name: Install maven and jdk
+  apt:
+    name: 
+      - maven
+      - openjdk-8-jdk
+    update_cache: yes
+  become: true
+
+
+- git:
+    repo: https://github.com/jgwest/github-api-mirror
+    force: true
+    version: "{{ gham_target_git_version | default('master') }}"
+    dest: ~/github-api-mirror
+
+
+- name: Copy file with owner and permissions
+  copy:
+    src: "{{ lookup('env', 'GHAM_CONF_YAML_PATH') }}"
+    dest: ~/github-api-mirror/GitHubApiMirrorLiberty/resources/github-settings.yaml
+    mode: u=rw,g=r,o=r
+
+  
+- name: Run docker build script
+  command: ~/github-api-mirror/resources/docker/build.sh
+
+
+- name: Backup volume to COS (if the volume exists)
+  command: ~/shared-scripts/backup-volume-to-cos.sh "github-api-mirror-data-volume" "gham" 
+  when:
+    - disable_backups is undefined or disable_backups != "true"
+
+
+- name: If the volume doesn't exist, restore the contents from COS (if COS has at least one backup)
+  command: ~/shared-scripts/restore-volume-from-cos.sh "gham" "github-api-mirror-data-volume" "github-api-mirror" "default"
+
+
+- name: Run container with Docker
+  command: ~/github-api-mirror/resources/docker/run-local.sh
+

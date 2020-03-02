@@ -1,0 +1,30 @@
+
+- name: Copy resources directory
+  copy:
+    src: resources/
+    dest: $HOME/shared-scripts
+
+
+- name: Chmod script files
+  shell: "chmod +x $HOME/shared-scripts/*.sh"
+  args:
+    warn: no
+
+
+- name: Install restic
+  snap:
+    name: restic
+    classic: yes
+  become: true
+
+
+- name: Install aws-cli
+  snap:
+    name: aws-cli
+    classic: yes
+  become: true
+
+
+- name: reset ssh connection to allow user changes to affect 'current login user'
+  meta: reset_connection
+

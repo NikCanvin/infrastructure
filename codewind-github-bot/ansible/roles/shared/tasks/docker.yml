@@ -1,0 +1,66 @@
+- name: Uninstall snap docker
+  become: true
+  snap:
+    name: docker
+    state: absent
+
+
+- name: Install docker install prerequisites
+  become: true
+  apt:
+    pkg:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+
+- name: Add Docker apt-key
+  become: true
+  apt_key:
+    url: "https://download.docker.com/linux/ubuntu/gpg"
+
+
+- name: Add Docker repository
+  become: true
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    state: present
+
+
+- name: Install Docker
+  become: true
+  apt:
+    pkg:
+      - docker-ce
+      - docker-compose
+
+
+- name: "Add docker group"
+  become: true
+  group:
+    name: docker
+    system: yes
+
+
+- name: "Add the user {{ ansible_user_id }} to docker group"
+  become: true
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+
+
+- stat: path=/var/run/docker.sock
+  register: docker_sock
+
+
+- name: restart-docker
+  become: true
+  command: "systemctl restart docker"
+  when: (not docker_sock.stat.exists) or
+        (not docker_sock.stat.gr_name == 'docker')
+
+
+- name: reset ssh connection to allow user changes to affect 'current login user'
+  meta: reset_connection

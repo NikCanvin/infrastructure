@@ -1,0 +1,73 @@
+
+- import_tasks: ../../shared/tasks/docker.yml
+
+- import_tasks: ../../shared/tasks/shared-setup.yml
+
+# ----------------------------
+
+- name: Install maven and jdk
+  apt:
+    name: 
+      - maven
+      - openjdk-8-jdk
+    update_cache: yes
+  become: true
+
+
+- git:
+    repo: http://github.com/jgwest/codewind-github-bot
+    force: true
+    version: "{{ bot_target_git_version | default('master') }}"
+    dest: ~/codewind-github-bot
+    accept_hostkey: yes
+
+
+- name: Copy bot configuration file 
+  copy:
+    src: "{{ lookup('env', 'BOT_CONF_YAML_PATH') }}"
+    dest: ~/codewind-github-bot/codewind-bot-settings.yaml
+    mode: u=rw,g=r,o=r
+  
+
+- name: Copy authorized users list
+  copy:
+    src: "{{ lookup('env', 'BOT_PATH_TO_AUTHORIZED_USERS') }}"
+    dest: ~/codewind-github-bot/authorized-users.txt
+    mode: u=rw,g=r,o=r
+
+
+- name: Run docker build script
+  command: ~/codewind-github-bot/docker/build_docker.sh
+
+
+- name: Backup volume to COS (if the volume exists)
+  command: ~/shared-scripts/backup-volume-to-cos.sh "codewind-github-bot-data-volume" "codewind-bot" 
+  when:
+    - disable_backups is undefined or disable_backups != "true"
+
+
+- name: Remove backup to COS crontab if disable_backups is true
+  cron:
+    name: "Backup volume to COS"
+    state: absent
+  when:
+    - disable_backups is defined and disable_backups == "true"
+
+
+- name: Add cron to backup volume to COS
+  cron:
+    name: "Backup volume to COS"
+    hour: "5"
+    minute: "12"
+    job: "AWS_ACCESS_KEY_ID=\"{{ aws_access_key_id }}\"   AWS_SECRET_ACCESS_KEY=\"{{ aws_secret_access_key }}\"   RESTIC_PASSWORD=\"{{ restic_password }}\" ~/shared-scripts/backup-volume-to-cos.sh codewind-github-bot-data-volume codewind-bot"
+  when:
+    - disable_backups is undefined or disable_backups != "true"
+
+
+- name: If the volume doesn't exist, restore the contents from COS (if COS has at least one backup)
+  command: ~/shared-scripts/restore-volume-from-cos.sh "codewind-bot" "codewind-github-bot-data-volume" "codewind-github-bot" "default"
+
+
+- name: Run docker run script
+  command: ~/codewind-github-bot/docker/run_docker.sh "~/codewind-github-bot/codewind-bot-settings.yaml" "~/codewind-github-bot/authorized-users.txt"
+
