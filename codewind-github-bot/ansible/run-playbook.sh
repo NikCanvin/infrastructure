@@ -8,7 +8,7 @@ cd $SCRIPT_LOCT
 
 
 if [ -z "$1" ]; then
-	>&2 echo "Error: first parameter should be either gham or bot"
+	>&2 echo "Error: first parameter should be either gham, zham, or bot"
 	exit 1
 fi
 
@@ -46,15 +46,15 @@ if [ "$1" == "codewind-bot" ]; then
 		export BOT_PATH_TO_AUTHORIZED_USERS=$4
 	fi
 
+elif [ "$1" == "zham" ]; then
+	export ZHAM_CONF_YAML_PATH=$3
+	echo "* Using ZHAM YAML Config path: $ZHAM_CONF_YAML_PATH"
+
 else
 	export GHAM_CONF_YAML_PATH=$3
 	echo "* Using GHAM YAML Config path: $GHAM_CONF_YAML_PATH"
 fi
 
 
-
-
 ANSIBLE_HOST_KEY_CHECKING=false ANSIBLE_STDOUT_CALLBACK=debug ansible-playbook -v -i "$PATH_TO_INVENTORY_FILE" "./$YAML_FILE"
-
-
 
