@@ -32,7 +32,7 @@
 - name: Copy authorized users list
   copy:
     src: "{{ lookup('env', 'BOT_PATH_TO_AUTHORIZED_USERS') }}"
-    dest: ~/codewind-github-bot/authorized-users.txt
+    dest: ~/codewind-github-bot/authorized-users.yaml
     mode: u=rw,g=r,o=r
 
 
@@ -69,5 +69,5 @@
 
 
 - name: Run docker run script
-  command: ~/codewind-github-bot/docker/run_docker.sh "~/codewind-github-bot/codewind-bot-settings.yaml" "~/codewind-github-bot/authorized-users.txt"
+  command: ~/codewind-github-bot/docker/run_docker.sh "~/codewind-github-bot/codewind-bot-settings.yaml" "~/codewind-github-bot/authorized-users.yaml"
 
