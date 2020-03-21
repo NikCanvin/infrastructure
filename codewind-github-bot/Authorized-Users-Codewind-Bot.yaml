@@ -1,0 +1,137 @@
+
+# Users on this list are able to issue /command-style commands on 
+# issues in the Eclipse Codewind GitHub repositories. 
+
+# If you wish to receive messages from the Codewind Bot 
+# on Mattermost (for example, bug verification reminders), 
+# include your mattermost.eclipse.org ID in addition to your 
+# GitHub ID.
+
+---
+userIDs:
+
+- github: "andyrwatson"
+  mattermost: "andyrwatson"
+
+- github: "beccabau"
+  mattermost: "beccabau"
+
+- github: "bsbyrd1"
+  mattermost: "bsbyrd"
+
+- github: "cccanderson"
+  mattermost: "ccc"
+
+- github: "davidg1011"
+  mattermost: "davidg"
+
+- github: "deboer-tim"
+  mattermost: "deboer"
+
+- github: "ebuckle"
+
+- github: "eharris369"
+  mattermost: "eharrisca"
+
+- github: "elsony"
+  mattermost: "eyuen"
+
+- github: "geekarthur"
+  mattermost: "jingfu"
+
+- github: "hhellyer"
+  mattermost: "hhellyer"
+
+- github: "jagraj"
+  mattermost: "jagraj"
+
+- github: "james-wallis"
+  mattermost: "james-wallis"
+
+- github: "jcockbain"
+  mattermost: "james_cockbain"
+
+- github: "jgwest"
+  mattermost: "jgwest"
+
+- github: "johnmcollier"
+  mattermost: "jcollier"
+
+- github: "jopit"
+  mattermost: "jsp"
+
+- github: "josephca"
+  mattermost: "josephk"
+
+- github: "keithchong"
+  mattermost: "kchong"
+
+- github: "liamchampton"
+  mattermost: "liamchampton"
+
+- github: "makandre"
+  mattermost: "makandre"
+
+- github: "malincoln"
+  mattermost: "marylin"
+
+- github: "markcor11"
+  mattermost: "markcor11"
+
+- github: "mattcolegate"
+  mattermost: "mattcolegate"
+
+- github: "maysunfaisal"
+  mattermost: "maysun"
+
+- github: "melhopper"
+  mattermost: "melanieh"
+
+- github: "micgibso"
+  mattermost: "micgibso"
+
+- github: "mmulholl"
+  mattermost: "martinmulholland"
+
+- github: "naveenkaratekid"
+  mattermost: "naveenk1"
+
+- github: "nikcanvin"
+  mattermost: "nik"
+
+- github: "rajivnathan"
+  mattermost: "rajivnathan"
+
+- github: "rtaniwa"
+  mattermost: "rtaniwa"
+
+- github: "rwalle61"
+  mattermost: "rwalle61"
+
+- github: "sghung"
+  mattermost: "sghung"
+
+- github: "sishida"
+  mattermost: "sishida"
+
+- github: "ssh24"
+  mattermost: "sakibh"
+
+- github: "stalleyj"
+  mattermost: "stalleyj"
+
+- github: "sujeilyfonseca"
+  mattermost: "sujeily-fonseca"
+
+- github: "tetchel"
+  mattermost: "timetchells"
+
+- github: "tobespc"
+  mattermost: "tobycorbin"
+
+- github: "yangcao77"
+  mattermost: "stephanie_cao"
+
+- mattermost: "jasper"
+
+
