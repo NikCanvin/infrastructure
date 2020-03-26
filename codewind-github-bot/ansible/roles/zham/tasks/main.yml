@@ -15,7 +15,7 @@
 
 
 - git:
-    repo: https://github.com/jgwest/zenhub-api-mirror
+    repo: "{{ zham_target_git_repo | default('https://github.com/jgwest/zenhub-api-mirror')}}"
     force: true
     version: "{{ zham_target_git_version | default('master') }}"
     dest: ~/zenhub-api-mirror

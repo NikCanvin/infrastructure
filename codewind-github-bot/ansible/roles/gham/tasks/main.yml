@@ -15,7 +15,7 @@
 
 
 - git:
-    repo: https://github.com/jgwest/github-api-mirror
+    repo: "{{ gham_target_git_repo | default('https://github.com/jgwest/github-api-mirror')}}"
     force: true
     version: "{{ gham_target_git_version | default('master') }}"
     dest: ~/github-api-mirror

@@ -15,7 +15,7 @@
 
 
 - git:
-    repo: http://github.com/jgwest/codewind-github-bot
+    repo: "{{ bot_target_git_repo | default('https://github.com/codewind-resources/codewind-github-bot')}}"
     force: true
     version: "{{ bot_target_git_version | default('master') }}"
     dest: ~/codewind-github-bot

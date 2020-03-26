@@ -1,4 +1,20 @@
 
+
+- name: Ensure .ssh directory exists
+  file:
+    path: $HOME/.ssh
+    state: directory
+
+#- name: Copy local ssh keys to remote, to allow git clone in later steps
+#  copy:
+#    src: "{{ item }}"
+#    dest: $HOME/.ssh
+#    mode: u=rw,g=,o=
+#  with_fileglob:
+#    - ~/.ssh/id_rsa*
+#  ignore_errors: yes
+
+
 - name: Copy resources directory
   copy:
     src: resources/
