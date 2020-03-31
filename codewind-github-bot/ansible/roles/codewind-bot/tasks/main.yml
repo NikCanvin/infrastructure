@@ -38,7 +38,11 @@
 
 - name: Run docker build script
   command: ~/codewind-github-bot/docker/build_docker.sh
-
+  environment:
+    GHAM_TARGET_REPO: "{{ gham_target_repo | default('') }}"
+    GHAM_TARGET_VERSION: "{{ gham_target_version | default('') }}"
+    ZHAM_TARGET_REPO: "{{ zham_target_repo | default('') }}"
+    ZHAM_TARGET_VERSION: "{{ zham_target_version | default('') }}"
 
 - name: Backup volume to COS (if the volume exists)
   command: ~/shared-scripts/backup-volume-to-cos.sh "codewind-github-bot-data-volume" "codewind-bot" 
