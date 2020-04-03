@@ -41,6 +41,26 @@
 - name: If the volume doesn't exist, restore the contents from COS (if COS has at least one backup)
   command: ~/shared-scripts/restore-volume-from-cos.sh "zham" "zenhub-api-mirror-data-volume" "zenhub-api-mirror" "default"
 
+
+- name: Remove backup to COS crontab if disable_backups is true
+  cron:
+    name: "Backup ZHAM volume to COS"
+    state: absent
+  when:
+    - disable_backups is defined and disable_backups == "true"
+
+
+- name: Add cron to backup volume to COS
+  cron:
+    name: "Backup ZHAM volume to COS"
+    hour: "3"
+    minute: "12"
+    job: "AWS_ACCESS_KEY_ID=\"{{ aws_access_key_id }}\"   AWS_SECRET_ACCESS_KEY=\"{{ aws_secret_access_key }}\"   RESTIC_PASSWORD=\"{{ restic_password }}\" ~/shared-scripts/backup-volume-to-cos.sh zenhub-api-mirror-data-volume zham"
+  when:
+    - disable_backups is undefined or disable_backups != "true"
+
+
+
 - name: Update default exposed port
   lineinfile:
     path: ~/zenhub-api-mirror/resources/docker/run-local.sh

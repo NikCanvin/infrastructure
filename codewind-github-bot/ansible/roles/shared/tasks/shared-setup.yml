@@ -5,6 +5,11 @@
     path: $HOME/.ssh
     state: directory
 
+- name: Remove old .ssh id_rsa private key, if present, to partially mitigate credential leakage to the target machine
+  file:
+    state: absent
+    path: $HOME/.ssh/id_rsa
+
 #- name: Copy local ssh keys to remote, to allow git clone in later steps
 #  copy:
 #    src: "{{ item }}"
